@@ -82,7 +82,7 @@ public class Signup extends AppCompatActivity {
                 //Comprueba que ningún campo queda vacío
                 if(email.getText().toString().length()>0 && username.getText().toString().length()>0 && pass.getText().toString().length()>0 && pass1.getText().toString().length()>0){
                     //Comprueba que ambas contraseñas coinciden
-                    if (pass.getText() == pass1.getText()){
+                    if (pass.getText().toString().equals(pass1.getText().toString())){
                         //Envía datos al servidor para intentar registrarse
                         MyATaskCliente myATaskYW = new MyATaskCliente();
                         myATaskYW.execute("#SIGNUP#"+email.getText().toString()+"#"+pass.getText().toString()+"#");
