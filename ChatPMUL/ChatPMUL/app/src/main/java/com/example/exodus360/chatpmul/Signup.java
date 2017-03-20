@@ -99,6 +99,7 @@ public class Signup extends AppCompatActivity {
                         Toast.makeText(this, "First connection to the server", Toast.LENGTH_LONG).show();
                         Log.d("","Sirvo para escribir");
                         System.out.println("Boo?");
+                        //TODO1: SET THIS TO AN ASYNC TASK
                         ConectarCliente();
                         //Envía datos al servidor para intentar registrarse
                         //MyATaskCliente myATaskYW = new MyATaskCliente();
@@ -123,10 +124,10 @@ public class Signup extends AppCompatActivity {
     }
 
     private void ConectarCliente() {
-        Log.d("","Estoy Aqui");
-        String ip = "127.0.0.1";
+        //Log.d("","Estoy Aqui");
+        String ip = "10.0.2.2";
         int puerto = 2000;
-        //log(" socket " + ip + " " + puerto);
+        Log.d(""," Socket " + ip + " " + puerto);
         try {
             sk = new Socket(ip, puerto);
             entrada = new BufferedReader(new InputStreamReader(sk.getInputStream()));
