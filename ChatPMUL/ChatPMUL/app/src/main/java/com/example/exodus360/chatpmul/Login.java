@@ -1,6 +1,8 @@
 package com.example.exodus360.chatpmul;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -41,55 +44,65 @@ public class Login extends AppCompatActivity {
     }
 
     public void buttonLogin_Click(View view){
-        ConnectClient();
+        new LoginAsyncTask().execute();
     }
 
-    private void ConnectClient() {
+    private Boolean ConnectClient() {
         String ip = "10.0.2.2";
         int port = 2000;
         try {
             sk = new Socket(ip, port);
             input = new BufferedReader(new InputStreamReader(sk.getInputStream()));
-            output = new PrintWriter(new OutputStreamWriter(sk.getOutputStream()), true);
+            output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sk.getOutputStream())), true);
             String aux = input.readLine();
-            Toast.makeText(this, aux, Toast.LENGTH_LONG).show();
-            Toast.makeText(this, aux, Toast.LENGTH_LONG).show();
-            TryLogin();
+            return true;
         } catch (Exception e) {
             Log.d("","error: " + e.toString());
+            return false;
         }
+
     }
 
-    private void TryLogin(){
+    private String TryLogin(){
         try {
-            output.write("#LOGIN#" + email.getText() + "#" + password.getText() + "#");
-            data = input.readLine();
+            output.println("#LOGIN#" + email.getText() + "#" + password.getText() + "#");
+            return input.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-            //For debbuging purposes
-            System.out.println(data);
+    public class LoginAsyncTask extends AsyncTask<String, String, Long> {
 
-            String [] subdata = data.split("#");
+        @Override
+        protected Long doInBackground(String... params) {
+            if (ConnectClient()){
+                String data = TryLogin();
+                publishProgress(data);
+            }
+            return (long)0;
+        }
 
+        protected void onProgressUpdate(String... string) {
+            String [] subdata = string[0].split("#");
             if(subdata[1].equals("OK")){
                 //TODO 1 WE HAVE TO CREATE THE NEXT WINDOW (LOBBY) SO WE CAN REFERENCE IT
                 //The "Signup.class" in the next line has to be replace with the reference to the activity we desire to load
-                Intent intent = new Intent(this, Lobby.class);
+                Intent intent = new Intent(getApplicationContext(), Lobby.class);
                 Bundle b = new Bundle();
                 b.putString("email",email.getText().toString());
                 intent.putExtras(b);
                 startActivity(intent);
 
-                Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Login successful", Toast.LENGTH_LONG).show();
             }else if(subdata[1].equals("NOK")){
                 if (subdata[2].equals("E2")){
-                    Toast.makeText(this, "Incorrect password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Incorrect password", Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(this, "User not registered", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Email not registered", Toast.LENGTH_LONG).show();
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

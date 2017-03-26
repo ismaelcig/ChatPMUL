@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -91,7 +92,7 @@ public class Signup extends AppCompatActivity {
         try {
             sk = new Socket(ip, puerto);
             input = new BufferedReader(new InputStreamReader(sk.getInputStream()));
-            output = new PrintWriter(new OutputStreamWriter(sk.getOutputStream()), true);
+            output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sk.getOutputStream())), true);
             String aux = input.readLine();
             //For debugging purposes
             System.out.println(aux);
@@ -103,7 +104,10 @@ public class Signup extends AppCompatActivity {
     private void TrySignUp(){
         try {
             data = "#SIGNUP#" + email.getText().toString() + "#" + pass.getText().toString() + "#";
-            output.write(data);
+            output.println(data);
+            output.flush();
+//            output.write(data);
+//            output.flush();
             data = input.readLine();
             String [] subdata = data.split("#");
 
