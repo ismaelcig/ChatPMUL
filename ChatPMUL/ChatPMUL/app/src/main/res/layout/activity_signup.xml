@@ -14,13 +14,23 @@
     <include layout="@layout/toolbar"/>
 
     <TextView
-        android:text="Name"
+        android:text="Email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:id="@+id/textView"
         android:layout_weight="1"
         />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="name@gmail.com"
+        android:ems="10"
+        android:id="@+id/editTextEmail"
+        android:layout_weight="1" />
+   <!--
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -46,7 +56,7 @@
             android:id="@+id/editTextLastname"
             android:layout_weight="1" />
     </LinearLayout>
-
+-->
     <TextView
         android:text="Username"
         android:layout_width="match_parent"
@@ -91,15 +101,31 @@
         android:inputType="textPassword"
         android:text="Name"
         android:ems="10"
-        android:id="@+id/editText9"
+        android:id="@+id/editTextPassword1"
         android:layout_weight="1"/>
 
-    <Button
-        android:text="Register"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:layout_weight="1"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:text="Sign Up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonRegister"
+            android:onClick="buttonRegister_Click"
+            android:layout_weight="1"/>
+
+        <Button
+            android:text="Back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonBack"
+            android:onClick="buttonBack_Click"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
 
 
 </LinearLayout>
