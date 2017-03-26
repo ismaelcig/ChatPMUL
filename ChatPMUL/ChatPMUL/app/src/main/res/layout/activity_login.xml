@@ -24,10 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Username"
+        android:text="Email"
         android:ems="10"
         android:layout_weight="1"
-        android:id="@+id/editText" />
+        android:id="@+id/et_email" />
 
     <EditText
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:text="Password"
         android:ems="10"
         android:layout_weight="1"
-        android:id="@+id/editText2" />
+        android:id="@+id/et_password" />
 
     <LinearLayout
         android:orientation="horizontal"
