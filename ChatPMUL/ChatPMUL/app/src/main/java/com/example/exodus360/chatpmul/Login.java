@@ -54,7 +54,7 @@ public class Login extends AppCompatActivity {
             String aux = input.readLine();
             Toast.makeText(this, aux, Toast.LENGTH_LONG).show();
             Toast.makeText(this, aux, Toast.LENGTH_LONG).show();
-
+            TryLogin();
         } catch (Exception e) {
             Log.d("","error: " + e.toString());
         }
@@ -73,11 +73,12 @@ public class Login extends AppCompatActivity {
             if(subdata[1].equals("OK")){
                 //TODO 1 WE HAVE TO CREATE THE NEXT WINDOW (LOBBY) SO WE CAN REFERENCE IT
                 //The "Signup.class" in the next line has to be replace with the reference to the activity we desire to load
-//                Intent intent = new Intent(this, Signup.class);
-//                Bundle b = new Bundle();
-//                b.putString("email",email.getText().toString());
-//                intent.putExtras(b);
-//                startActivity(intent);
+                Intent intent = new Intent(this, Lobby.class);
+                Bundle b = new Bundle();
+                b.putString("email",email.getText().toString());
+                intent.putExtras(b);
+                startActivity(intent);
+
                 Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show();
             }else if(subdata[1].equals("NOK")){
                 if (subdata[2].equals("E2")){

@@ -115,7 +115,7 @@ public class Signup extends AppCompatActivity {
                 Toast.makeText(this, "Signup successful", Toast.LENGTH_LONG).show();
                 Back();
             }else{
-                Toast.makeText(this, "User already registered", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Email already registered", Toast.LENGTH_LONG).show();
             }
 
         } catch (Exception e) {
