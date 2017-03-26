@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -26,16 +32,11 @@ public class Signup extends AppCompatActivity {
     private  EditText username;
     private  EditText pass;
     private  EditText pass1;
-    private Context context = this;
 
-    /**
-     * Puerto
-     * */
-    private static final int SERVERPORT = 2000;
-    /**
-     * HOST
-     * */
-    private static final String ADDRESS = "127.0.0.1";
+    String data;
+    Socket sk;
+    BufferedReader input;
+    PrintWriter output;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,163 +47,84 @@ public class Signup extends AppCompatActivity {
         if (toolbar != null){
             setSupportActionBar(toolbar);
         }
+
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitNetwork().build());
+
         email = (EditText)findViewById(R.id.editTextEmail);
-        username = (EditText)findViewById(R.id.editTextUsername);//******************************************No se envía
+        username = (EditText)findViewById(R.id.editTextUsername);
         pass = (EditText)findViewById(R.id.editTextPassword);
         pass1 = (EditText)findViewById(R.id.editTextPassword1);
-
-        /*buttonSignUp.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View view) {
-                        //Comprueba que ningún campo queda vacío
-                        if(email.getText().toString().length()>0 && username.getText().toString().length()>0 && pass.getText().toString().length()>0 && pass1.getText().toString().length()>0){
-                            //Comprueba que ambas contraseñas coinciden
-                            if (pass.getText() == pass1.getText()){
-                                //Envía datos al servidor para intentar registrarse
-                                MyATaskCliente myATaskYW = new MyATaskCliente();
-                                myATaskYW.execute("#SIGNUP#"+email.getText().toString()+"#"+pass.getText().toString()+"#");
-                            }
-                            else{
-                                Toast.makeText(context, "Both passwords must match", Toast.LENGTH_LONG).show();
-                                pass.setText("");
-                                pass1.setText("");
-                            }
-                        }else{
-                            Toast.makeText(context, "All fields must be filled in", Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });*/
-
-
+        buttonSignUp = (Button)findViewById(R.id.buttonSignup);
     }
 
     public void buttonRegister_Click(View view){
 
-                //Comprueba que ningún campo queda vacío
+                //Checks that no field is empty
                 if(email.getText().toString().length()>0 && username.getText().toString().length()>0 && pass.getText().toString().length()>0 && pass1.getText().toString().length()>0){
-                    //Comprueba que ambas contraseñas coinciden
-                    if (pass.getText() == pass1.getText()){
-                        //Envía datos al servidor para intentar registrarse
-                        MyATaskCliente myATaskYW = new MyATaskCliente();
-                        myATaskYW.execute("#SIGNUP#"+email.getText().toString()+"#"+pass.getText().toString()+"#");
+                    //Validates that both passwords match
+                    if (pass.getText().toString().equals(pass1.getText().toString())){
+                        System.out.println("Boo?");
+                        ConnectClient();
+                        TrySignUp();
                     }
                     else{
-                        Toast.makeText(context, "Both passwords must match", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Both passwords must match", Toast.LENGTH_LONG).show();
                         pass.setText("");
                         pass1.setText("");
                     }
                 }else{
-                    Toast.makeText(context, "All fields must be filled in", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "All fields must be filled in", Toast.LENGTH_LONG).show();
                 }
     }
     public void buttonBack_Click(View view){
         Back();
     }
+
     void Back(){
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
 
-
-
-
-    /**
-     * Clase para interactuar con el servidor
-     * */
-    class MyATaskCliente extends AsyncTask<String,Void,String> {
-
-        /**
-         * Ventana que bloqueara la pantalla del movil hasta recibir respuesta del servidor
-         * */
-        ProgressDialog progressDialog;
-
-        /**
-         * muestra una ventana emergente
-         * */
-        @Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(context);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setTitle("Connecting to server");
-            progressDialog.setMessage("Please wait...");
-            progressDialog.show();
-        }
-
-        /**
-         * Se conecta al servidor y trata resultado
-         * */
-        @Override
-        protected String doInBackground(String... values){
-
-            try {
-                //Se conecta al servidor
-                InetAddress serverAddr = InetAddress.getByName(ADDRESS);
-                Log.i("I/TCP Client", "Connecting...");
-                Socket socket = new Socket(serverAddr, SERVERPORT);
-                Log.i("I/TCP Client", "Connected to server");
-
-                //envia peticion de cliente
-                Log.i("I/TCP Client", "Send data to server");
-                PrintStream output = new PrintStream(socket.getOutputStream());
-                String request = values[0];
-                output.println(request);
-
-                //recibe respuesta del servidor y formatea a String
-                Log.i("I/TCP Client", "Received data to server");
-                InputStream stream = socket.getInputStream();
-                byte[] lenBytes = new byte[256];
-                stream.read(lenBytes,0,256);
-                String received = new String(lenBytes,"UTF-8").trim();
-                Log.i("I/TCP Client", "Received " + received);
-                Log.i("I/TCP Client", "");
-
-                //cierra conexion
-                socket.close();
-                return received;
-            }catch (UnknownHostException ex) {
-                Log.e("E/TCP Client", "" + ex.getMessage());
-                return ex.getMessage();
-            } catch (IOException ex) {
-                Log.e("E/TCP Client", "" + ex.getMessage());
-                return ex.getMessage();
-            }
-        }
-
-        /**
-         * Oculta ventana emergente y muestra resultado en pantalla
-         * */
-        @Override
-        protected void onPostExecute(String value){
-            progressDialog.dismiss();
-            if (value.equals("#OK#")){
-                //Registrado correctamente
-                Toast.makeText(context, "Now you can login", Toast.LENGTH_LONG).show();
-                Back();
-            }
-            else if (value.equals("#NOK#")){
-                //El email ya está en uso
-                Toast.makeText(context, "This email is already on use", Toast.LENGTH_LONG).show();
-                email.setText("");
-                email.requestFocus();
-            }
-            //editText2.setText(value);
+    private void ConnectClient() {
+        String ip = "10.0.2.2";
+        int puerto = 2000;
+        Log.d(""," Socket " + ip + " " + puerto);
+        try {
+            sk = new Socket(ip, puerto);
+            input = new BufferedReader(new InputStreamReader(sk.getInputStream()));
+            output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sk.getOutputStream())), true);
+            String aux = input.readLine();
+            //For debugging purposes
+            System.out.println(aux);
+        } catch (Exception e) {
+            Log.d("","error: " + e.toString());
         }
     }
 
+    private void TrySignUp(){
+        try {
+            data = "#SIGNUP#" + email.getText().toString() + "#" + pass.getText().toString() + "#";
+            output.println(data);
+            output.flush();
+//            output.write(data);
+//            output.flush();
+            data = input.readLine();
+            String [] subdata = data.split("#");
 
+            //For debugging purposes
+            System.out.println(data);
+            System.out.println(subdata);
 
+            if (subdata[1].equals("OK")){
+                Toast.makeText(this, "Signup successful", Toast.LENGTH_LONG).show();
+                Back();
+            }else{
+                Toast.makeText(this, "Email already registered", Toast.LENGTH_LONG).show();
+            }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-}
+    }
