@@ -96,7 +96,7 @@ public class Signup extends AppCompatActivity {
                 if(email.getText().toString().length()>0 && username.getText().toString().length()>0 && pass.getText().toString().length()>0 && pass1.getText().toString().length()>0){
                     //Comprueba que ambas contraseñas coinciden
                     if (pass.getText().toString().equals(pass1.getText().toString())){
-                        Toast.makeText(this, "First connection to the server", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(this, "First connection to the server", Toast.LENGTH_LONG).show();
                         Log.d("","Sirvo para escribir");
                         System.out.println("Boo?");
                         //TODO1: SET THIS TO AN ASYNC TASK
@@ -135,7 +135,10 @@ public class Signup extends AppCompatActivity {
 
             Log.d("","conectando ");
             Log.d("", "recibiendo ... ");
-            Log.d("", entrada.readLine());
+            //Log.d("", entrada.readLine());
+            String aux = entrada.readLine();
+            Toast.makeText(this, aux, Toast.LENGTH_LONG).show();
+
 
         } catch (Exception e) {
             Log.d("","error: " + e.toString());
