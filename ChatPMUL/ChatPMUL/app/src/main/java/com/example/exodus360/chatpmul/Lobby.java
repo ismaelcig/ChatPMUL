@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,11 +24,18 @@ import static com.example.exodus360.chatpmul.R.id.listView;
 public class Lobby extends AppCompatActivity {
 
     LobbyList adapter;
-    ArrayList<Integer> imgs = new ArrayList<Integer>();
-    ArrayList<String> names = new ArrayList<String>();
+    static ArrayList<Integer> imgs = new ArrayList<Integer>();
+    static ArrayList<String> names = new ArrayList<String>();
+
+    static ArrayList<String> messages = new ArrayList<String>();
+    static ArrayList<String> emails = new ArrayList<String>();
+
+    static int index = 0;
+
     static Socket sk;
     static BufferedReader input;
     static PrintWriter output;
+
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
         @Override
@@ -56,6 +66,14 @@ public class Lobby extends AppCompatActivity {
         input = Login.GetBufferedReader();
         SetAdapter();
         timerHandler.postDelayed(timerRunnable,0);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(getBaseContext(), "You Clicked at " + names.get(+position), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getBaseContext(), PrivateChat.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void SetAdapter(){
@@ -69,7 +87,7 @@ public class Lobby extends AppCompatActivity {
 
         @Override
         protected Long doInBackground(String... params) {
-            String data = "#BEEP#" + getIntent().getStringExtra("email") + "#0#";
+            String data = "#BEEP#" + getIntent().getStringExtra("email") + "#" + index +"#";
             System.out.println(data);
             try {
                 output.println(data);
@@ -94,11 +112,9 @@ public class Lobby extends AppCompatActivity {
             //***************************************************************
             ////%USERS%email1%True1%email2%False2%...
             String [] subdata = subcmd[2].split("%");
-            //System.out.println(subdata.length);
             names.clear();
             imgs.clear();
             for (int i = 0; i < (subdata.length - 3) * 0.5; i++ ) {
-                System.out.println(subdata[(i*2)+2] + " " + subdata[(i*2)+3]);
                 names.add(subdata[(i*2)+2]);
                 if (subdata[(i*2)+3].equals("True")){
                     imgs.add(R.drawable.online);
@@ -108,6 +124,16 @@ public class Lobby extends AppCompatActivity {
             }
             SetAdapter();
             //***************************************************************
+
+            //***************************************************************
+            //%MSG%email1%Msg1%email2%Msg2%...
+            subdata = subcmd[3].split("%");
+            for (int i = 0; i < (subdata.length - 3) * 0.5; i++ ) {
+                emails.add(subdata[(i*2)+2]);
+                messages.add(subdata[(i*2)+3]);
+            }
+            //***************************************************************
+
 
         }
     }
