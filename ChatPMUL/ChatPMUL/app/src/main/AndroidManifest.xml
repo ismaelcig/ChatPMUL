@@ -20,7 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Signup" />
-        <activity android:name=".Lobby"></activity>
+        <activity android:name=".Lobby" />
+        <activity android:name=".PublicChat" />
+        <activity android:name=".PrivateChat"></activity>
     </application>
 
 </manifest>
