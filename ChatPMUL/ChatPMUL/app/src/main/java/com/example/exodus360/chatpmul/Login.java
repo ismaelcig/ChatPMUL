@@ -25,9 +25,9 @@ public class Login extends AppCompatActivity {
 
     String data;
 
-    Socket sk;
-    BufferedReader input;
-    PrintWriter output;
+    static Socket sk;
+    static BufferedReader input;
+    static PrintWriter output;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,7 @@ public class Login extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), Lobby.class);
                 Bundle b = new Bundle();
                 b.putString("email",email.getText().toString());
+
                 intent.putExtras(b);
                 startActivity(intent);
 
@@ -104,6 +105,18 @@ public class Login extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public static synchronized Socket GetSocket(){
+        return sk;
+    }
+
+    public static synchronized PrintWriter GetPrintWriter(){
+        return output;
+    }
+
+    public static synchronized BufferedReader GetBufferedReader(){
+        return input;
     }
 
 }
