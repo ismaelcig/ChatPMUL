@@ -10,7 +10,7 @@
     android:orientation="vertical"
     tools:context="com.example.exodus360.chatpmul.PrivateChat">
 
-    <include layout="@layout/toolbar"/>
+    <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
 <!--Para mostrar User1 fuera de la toolbar, cambiar a LinearLayout-->
 <!--Se podría/debería mostrar aquí si está conectado-->
     <TextView
@@ -23,13 +23,20 @@
         />
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></ListView>
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@id/linear"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:paddingBottom="10dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/linear"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:layout_margin="5dp" >
@@ -39,19 +46,18 @@
             android:layout_height="40dp"
             android:hint="Write something..."
             android:layout_margin="2dp"
-            android:layout_centerVertical="true"
             android:background="@drawable/EditTextStyle"
             android:padding="10dp"
-            android:layout_weight="3"
+            android:layout_weight="8"
             />
 
-        <Button
+        <ImageButton
+            android:id="@+id/sendMessageButton"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Send"
-            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:background="@drawable/send_button"
             android:layout_weight="1"
-            />
+             />
 
     </LinearLayout>
 
