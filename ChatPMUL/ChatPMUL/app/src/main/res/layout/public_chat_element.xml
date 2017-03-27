@@ -11,7 +11,9 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:layout_margin="10dp"
-            android:textAlignment="center"/>
+            android:gravity="left"
+            android:textAlignment="gravity"/>
+
     </TableRow>
     <TableRow>
         <TextView
@@ -20,7 +22,9 @@
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:layout_margin="5dp"
-            android:textAlignment="center"/>
+            android:gravity="left"
+            android:textAlignment="gravity"/>
+
     </TableRow>
 
 </TableLayout>
