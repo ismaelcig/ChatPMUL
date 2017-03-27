@@ -22,7 +22,7 @@ public class Lobby extends AppCompatActivity {
 
     LobbyList adapter;
     ArrayList<Integer> imgs = new ArrayList<Integer>();
-    ArrayList<String> nombres = new ArrayList<String>();
+    ArrayList<String> names = new ArrayList<String>();
     static Socket sk;
     static BufferedReader input;
     static PrintWriter output;
@@ -31,7 +31,7 @@ public class Lobby extends AppCompatActivity {
         @Override
         public void run() {
 //            imgs.add(R.drawable.offline);
-//            nombres.add("Perro");
+//            names.add("Perro");
 //            SetAdapter();
             new BeepAsyncTask().execute();
             timerHandler.postDelayed(timerRunnable,1000);
@@ -48,9 +48,9 @@ public class Lobby extends AppCompatActivity {
 //        imgs.add(R.drawable.online);
 //        imgs.add(R.drawable.online);
 //
-//        nombres.add("Buho");
-//        nombres.add("Buho");
-//        nombres.add("Buho");
+//        names.add("Buho");
+//        names.add("Buho");
+//        names.add("Buho");
         sk = Login.GetSocket();
         output = Login.GetPrintWriter();
         input = Login.GetBufferedReader();
@@ -60,7 +60,7 @@ public class Lobby extends AppCompatActivity {
 
     private void SetAdapter(){
         listView = (ListView)findViewById(R.id.listView);
-        adapter = new LobbyList(Lobby.this, imgs, nombres);
+        adapter = new LobbyList(Lobby.this, imgs, names);
         listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
     }
@@ -87,6 +87,28 @@ public class Lobby extends AppCompatActivity {
             //%MSG%email1%Msg1%email2%Msg2%...
             //%PRIV%emailSender1%priv1%emailSender2%priv2%...
             System.out.println(string[0]);
+
+            //With this I get the 3 inner commands that i have to process
+            String [] subcmd = string[0].split("#");
+
+            //***************************************************************
+            ////%USERS%email1%True1%email2%False2%...
+            String [] subdata = subcmd[2].split("%");
+            //System.out.println(subdata.length);
+            names.clear();
+            imgs.clear();
+            for (int i = 0; i < (subdata.length - 3) * 0.5; i++ ) {
+                System.out.println(subdata[(i*2)+2] + " " + subdata[(i*2)+3]);
+                names.add(subdata[(i*2)+2]);
+                if (subdata[(i*2)+3].equals("True")){
+                    imgs.add(R.drawable.online);
+                }else{
+                    imgs.add(R.drawable.offline);
+                }
+            }
+            SetAdapter();
+            //***************************************************************
+
         }
     }
 }
