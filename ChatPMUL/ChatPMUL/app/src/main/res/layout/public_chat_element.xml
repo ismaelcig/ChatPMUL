@@ -4,10 +4,6 @@
     android:layout_height="match_parent">
 
     <TableRow>
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="25dp"
-            android:layout_height="25dp"/>
         <TextView
             android:id="@+id/textUser"
             android:layout_width="wrap_content"
@@ -15,6 +11,14 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:textAlignment="center"/>
-
     </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/textMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textAlignment="center"/>
+    </TableRow>
+
 </TableLayout>
