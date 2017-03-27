@@ -9,14 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LobbyList extends ArrayAdapter<String> {
     private final Activity context;
-    private final Integer[] img;//Icono
-    private final String[] nombre;
+    private final ArrayList<Integer> img;
+    private final ArrayList<String> nombre;
 
 
-    public LobbyList(Activity context, Integer[] img, String[] nombre) {
+    public LobbyList(Activity context, ArrayList<Integer> img, ArrayList<String> nombre) {
         super(context, R.layout.lobby_element, nombre);
         this.context = context;
         this.img = img;
@@ -30,8 +33,8 @@ public class LobbyList extends ArrayAdapter<String> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
         TextView txtNombre = (TextView) rowView.findViewById(R.id.textUser);
 
-        imageView.setImageResource(img[position]);
-        txtNombre.setText(nombre[position]);
+        imageView.setImageResource(img.get(position));
+        txtNombre.setText(nombre.get(position));
 
         return rowView;
     }
