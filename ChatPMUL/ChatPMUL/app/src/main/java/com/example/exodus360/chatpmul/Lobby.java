@@ -24,6 +24,9 @@ import static com.example.exodus360.chatpmul.R.id.listView;
 public class Lobby extends AppCompatActivity {
 
     LobbyList adapter;
+
+    static String email;
+
     static ArrayList<Integer> imgs = new ArrayList<Integer>();
     static ArrayList<String> names = new ArrayList<String>();
 
@@ -35,6 +38,8 @@ public class Lobby extends AppCompatActivity {
     static Socket sk;
     static BufferedReader input;
     static PrintWriter output;
+
+    static boolean active = false;
 
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
@@ -61,19 +66,21 @@ public class Lobby extends AppCompatActivity {
 //        names.add("Buho");
 //        names.add("Buho");
 //        names.add("Buho");
+        email = getIntent().getStringExtra("email");
+        active = true;
         sk = Login.GetSocket();
         output = Login.GetPrintWriter();
         input = Login.GetBufferedReader();
         SetAdapter();
         timerHandler.postDelayed(timerRunnable,0);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getBaseContext(), "You Clicked at " + names.get(+position), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getBaseContext(), PrivateChat.class);
-                startActivity(intent);
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+////                Toast.makeText(getBaseContext(), "You Clicked at " + names.get(+position), Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(getBaseContext(), PrivateChat.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private void SetAdapter(){
@@ -82,6 +89,11 @@ public class Lobby extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
     }
+
+//    private void SetPmAdapter(){
+//        listViewPm = (ListView)findViewById(R.id.listViewPm);
+//        adapterPm = new PrivateChatList(PrivateChat.this, pms);
+//    }
 
     public class BeepAsyncTask extends AsyncTask<String, String, Long> {
 
@@ -115,11 +127,13 @@ public class Lobby extends AppCompatActivity {
             names.clear();
             imgs.clear();
             for (int i = 0; i < (subdata.length - 3) * 0.5; i++ ) {
-                names.add(subdata[(i*2)+2]);
-                if (subdata[(i*2)+3].equals("True")){
-                    imgs.add(R.drawable.online);
-                }else{
-                    imgs.add(R.drawable.offline);
+                if (!getIntent().getStringExtra("email").equals(subdata[(i*2)+2])){
+                    names.add(subdata[(i*2)+2]);
+                    if (subdata[(i*2)+3].equals("True")){
+                        imgs.add(R.drawable.online);
+                    }else{
+                        imgs.add(R.drawable.offline);
+                    }
                 }
             }
             SetAdapter();
@@ -128,13 +142,29 @@ public class Lobby extends AppCompatActivity {
             //***************************************************************
             //%MSG%email1%Msg1%email2%Msg2%...
             subdata = subcmd[3].split("%");
+            emails.clear();
+            messages.clear();
             for (int i = 0; i < (subdata.length - 3) * 0.5; i++ ) {
                 emails.add(subdata[(i*2)+2]);
                 messages.add(subdata[(i*2)+3]);
             }
+            if (PrivateChat.active){
+                //actualizar el adapter de private chat
+            }
             //***************************************************************
 
-
         }
+
+    }
+
+    public void bt_openPublic(View view){
+        Intent intent = new Intent(this, PublicChat.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 }
