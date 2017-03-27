@@ -8,13 +8,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    tools:context="com.example.exodus360.chatpmul.Lobby">
+    tools:context="com.example.exodus360.chatpmul.Lobby"
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar"/>
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/listView" />
 </LinearLayout>
