@@ -13,118 +13,72 @@
 
     <include layout="@layout/toolbar"/>
 
-    <TextView
-        android:text="Email"
+    <!--ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:id="@+id/textView"
-        android:layout_weight="1"
-        />
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/imageView"
+        android:layout_weight="5"/-->
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="name@gmail.com"
+        android:hint="Email"
         android:ems="10"
         android:id="@+id/editTextEmail"
-        android:layout_weight="1" />
-   <!--
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_weight="1"
-        >
+        android:layout_margin="10dp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text="Name"
-            android:ems="10"
-            android:id="@+id/editTextName"
-            android:layout_weight="1" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text="Lastname"
-            android:ems="10"
-            android:id="@+id/editTextLastname"
-            android:layout_weight="1" />
-    </LinearLayout>
--->
-    <TextView
-        android:text="Username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_weight="1" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Username"
+        android:hint="Username"
         android:ems="10"
         android:id="@+id/editTextUsername"
-        android:layout_weight="1" />
-
-    <TextView
-        android:text="Password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_margin="10dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:text="Name"
+        android:hint="Password"
         android:ems="10"
-        android:id="@+id/editTextPassword" />
-
-    <TextView
-        android:text="Confirm password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewConfirmPass"
-        android:layout_weight="1"/>
+        android:id="@+id/editTextPassword"
+        android:layout_weight="1"
+        android:layout_margin="10dp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:text="Name"
+        android:hint="Confirm Password"
         android:ems="10"
         android:id="@+id/editTextPassword1"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_margin="10dp"/>
 
-    <LinearLayout
+    <Button
+        android:text="SignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:id="@+id/buttonRegister"
+        android:onClick="buttonRegister_Click"
+        android:layout_weight="1"
+        android:layout_margin="10dp"/>
 
-        <Button
-            android:text="Sign Up"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonRegister"
-            android:onClick="buttonRegister_Click"
-            android:layout_weight="1"/>
+    <Button
+        android:text="Signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/buttonBack"
+        android:onClick="buttonBack_Click"
+        android:layout_margin="10dp"/>
 
-        <Button
-            android:text="Back"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonBack"
-            android:onClick="buttonBack_Click"
-            android:layout_weight="1"/>
-    </LinearLayout>
 
 
 
