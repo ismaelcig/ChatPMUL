@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,10 +33,16 @@ public class PublicChat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_chat);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        if(toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
         textbox = (EditText)findViewById(R.id.textBox);
         SetAdapter();
         timerHandler.postDelayed(timerRunnable,0);
     }
+
 
     private void SetAdapter(){
         listViewPc = (ListView)findViewById(R.id.listViewPc);
@@ -44,6 +53,7 @@ public class PublicChat extends AppCompatActivity {
 
     public void bt_send(View view){
         new PublicAsyncTask().execute();
+        textbox.setText("");
     }
 
     public class PublicAsyncTask extends AsyncTask<String, String, Long> {
