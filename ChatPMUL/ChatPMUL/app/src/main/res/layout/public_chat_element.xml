@@ -10,8 +10,10 @@
             android:layout_height="25dp"
             android:textSize="20dp"
             android:textStyle="bold"
+            android:layout_margin="10dp"
             android:gravity="left"
             android:textAlignment="gravity"/>
+
     </TableRow>
     <TableRow>
         <TextView
@@ -19,8 +21,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
+            android:layout_margin="5dp"
             android:gravity="left"
             android:textAlignment="gravity"/>
+
     </TableRow>
 
 </TableLayout>
